@@ -42,13 +42,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     
     newGameButton.addEventListener('click', function () {
-        // Reset the game state
         gameState.fill(null);
         currentPlayer = 'X';
         statusDiv.textContent = 'Move your mouse over a square and click to play an X or an O.';
         statusDiv.classList.remove('you-won');
 
-        // Clear the board
         squares.forEach(function (sq) {
             sq.textContent = '';
             sq.classList.remove('X', 'O');

@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var currentPlayer = 'X'; 
     var gameState = Array(9).fill(null); 
     var statusDiv = document.getElementById('status');
+    var newGameButton = document.querySelector('.btn'); // Select the New Game button
 
     var winningCombinations = [
         [0, 1, 2],
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
         [2, 5, 8],
         [0, 4, 8],
         [2, 4, 6]
-    ]
+    ];
 
     squares.forEach(function (sq, index) {
         sq.classList.add('square');
@@ -29,18 +30,34 @@ document.addEventListener('DOMContentLoaded', function () {
                 sq.textContent = currentPlayer; 
                 sq.classList.add(currentPlayer); 
 
-                if(checkWinner(currentPlayer)){
+                if (checkWinner(currentPlayer)) {
                     statusDiv.textContent = 'Congratulations! Player ' + currentPlayer + ' wins!';
                     statusDiv.classList.add('you-won');
                 } else {
-                    currentPlayer = currentPlayer === 'x' ? 'o' : 'x';                
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';                
                 }
             }
         });
     });
-    function checkWinner(player){
-        return winningCombinations.some(function(combination){
-            return combination.every(function(index){
+
+    
+    newGameButton.addEventListener('click', function () {
+        // Reset the game state
+        gameState.fill(null);
+        currentPlayer = 'X';
+        statusDiv.textContent = 'Move your mouse over a square and click to play an X or an O.';
+        statusDiv.classList.remove('you-won');
+
+        // Clear the board
+        squares.forEach(function (sq) {
+            sq.textContent = '';
+            sq.classList.remove('X', 'O');
+        });
+    });
+
+    function checkWinner(player) {
+        return winningCombinations.some(function (combination) {
+            return combination.every(function (index) {
                 return gameState[index] === player;
             });
         });

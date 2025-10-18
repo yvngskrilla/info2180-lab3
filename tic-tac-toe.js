@@ -2,6 +2,18 @@ document.addEventListener('DOMContentLoaded', function () {
     var squares = document.querySelectorAll('#board > div');
     var currentPlayer = 'X'; 
     var gameState = Array(9).fill(null); 
+    var statusDiv = document.getElementById('status');
+
+    var winningCombinations = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ]
 
     squares.forEach(function (sq, index) {
         sq.classList.add('square');
@@ -12,14 +24,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
         
         sq.addEventListener('click', function () {
-            if (!gameState[index]) { 
+            if (!gameState[index] && !statusDiv.classList.contains('you-won')) { 
                 gameState[index] = currentPlayer; 
                 sq.textContent = currentPlayer; 
                 sq.classList.add(currentPlayer); 
 
-                
-                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                if(checkWinner(currentPlayer)){
+                    statusDiv.textContent = 'Congratulations! Player ' + currentPlayer + ' wins!';
+                    statusDiv.classList.add('you-won');
+                } else {
+                    currentPlayer = currentPlayer === 'x' ? 'o' : 'x';                
+                }
             }
         });
     });
+    function checkWinner(player){
+        return winningCombinations.some(function(combination){
+            return combination.every(function(index){
+                return gameState[index] === player;
+            });
+        });
+    }
 });
